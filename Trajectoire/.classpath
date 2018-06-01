@@ -2,5 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/home/florent/eclipse-workspace/lib/qtjambi-4.8.6.1-linux64/qtjambi-4.8.6.jar"/>
+	<classpathentry kind="lib" path="/home/florent/eclipse-workspace/lib/qtjambi-4.8.6.1-linux64/qtjambi-native-linux64-gcc-4.8.6.jar"/>
+	<classpathentry kind="lib" path="/home/florent/eclipse-workspace/lib/qtjambi-4.8.6.1-linux64/qtjambi-examples-4.8.6.jar"/>
+	<classpathentry kind="lib" path="/home/florent/eclipse-workspace/lib/qtjambi-4.8.6.1-linux64/qtjambi-designer-4.8.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,11 @@
 
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
+import javafx.*;
+
+
 public class Programme_principal {
 
 	
@@ -70,9 +74,12 @@ public class Programme_principal {
 		    		
 		    		double theta = Double.parseDouble(commande.substring(4,  commande.length()));
 		    		
+		    		System.out.println("theta = " + theta);
 		    		
 		    		vitesseCourante = rot(theta);
+		    		System.out.println(vitesseCourante.length);
 		    		for(int i = 0; i < vitesseCourante.length; i ++) {
+		    			
 		    			double[] tab = new double[4];
 		    			tab[0] = vitesseCourante[i][0];
 		    			tab[1] = vitesseCourante[i][1];
@@ -235,12 +242,17 @@ public class Programme_principal {
 		
 		
 		double Txy = d/Vmax;
+		//System.out.println("Txy = " + Txy);
+		
 		double Tauxy = Vmax/Amax;
+		//System.out.println("Tauxy = " + Tauxy);
 		
 		
 		
-		double T = (2*Math.PI*d/r0)/Wmax;
+		double T = (d/(r0*Wmax));
+		//System.out.println("T = " + T);
 		double Tau = Wmax/Emax;
+		//System.out.println("Tau = " + Tau);
 		
 		if (Txy < Tauxy) {
 			
@@ -268,7 +280,7 @@ public class Programme_principal {
 	}
 	
 	static double[][] v(double[] param, double d1, double d2) {
-		
+		System.out.println("ok2");
 		double T = param[0];
 		double Tau = param[1];
 		
@@ -313,7 +325,8 @@ public class Programme_principal {
 		
 		
 		
-		
+		System.out.println("ok3");
+		System.out.println("long = " + v.length);
 		return v;
 	}
 	
@@ -326,16 +339,19 @@ public class Programme_principal {
 		double longueur_arc = theta * r;
 		//distance parcourue par le robot
 		double Txy = longueur_arc/Vmax;
+		System.out.println("Txy = " + Txy);
 		
-		double T1 = 2*Math.PI*theta*(r-dist_roues)/(r0*Wmax); //distance parcourue par la roue 1
-		double T2 = 2*Math.PI*theta*(r+dist_roues)/(r0*Wmax);
-		
+		double T1 = theta*(r-dist_roues)/(r0*Wmax);
+		System.out.println("T1 = " + T1);//distance parcourue par la roue 1
+		double T2 = theta*(r+dist_roues)/(r0*Wmax);
+		System.out.println("T2 = " + T2);
 		double Tauxy = Vmax/Amax;
-		
+		System.out.println("Tauxy = " + Tauxy);
 		
 		double Tau1 = Wmax/Emax;
+		System.out.println("Tau1 = " + Tau1);
 		double Tau2 = Wmax/Emax;
-		
+		System.out.println("Tau2 = " + Tau2);
 		System.out.println("longueur_arc = " + longueur_arc);
 		System.out.println("Txy = " + Txy);
 		
@@ -401,13 +417,14 @@ public class Programme_principal {
 		if (Txy < Tauxy) {
 			
 			Tauxy = Math.sqrt(0);
+			System.out.println("Tauxy = " + Tauxy);
 			
 			Txy = Tauxy;
 		}
 		
 		if (T < Tau) {
 					
-					Tau = Math.sqrt(theta*(r0-dist_roues)/Emax);
+					Tau = Math.sqrt(theta*(dist_roues/2)/Emax);
 					T = Tau;
 				}
 		
@@ -415,7 +432,8 @@ public class Programme_principal {
 		T = max(Txy, T);
 		Tau = max(Tauxy, Tau);
 		
-		
+		System.out.println("T = " + T);
+		System.out.println("Tau = " + Tau);
 		double[] param = new double[2];
 		param[0] = T;
 		param[1] = Tau;
@@ -426,6 +444,7 @@ public class Programme_principal {
 			
 			double d1 = -theta*(dist_roues/2);
 			double d2 = -d1;
+			System.out.println("ok");
 			return v(param, d1, d2);
 					
 		}
@@ -434,6 +453,7 @@ public class Programme_principal {
 			
 			double d1 = theta*(dist_roues/2);
 			double d2 = -d1;
+			System.out.println("ok");
 			return v(param, d1, d2);
 		}	
 	}
@@ -510,6 +530,14 @@ public class Programme_principal {
 		}
 		
 	}
+	static double estPlus(double a) {
+		if(a>0.001) {
+			return a;
+		}
+		else {
+			return 0;
+		}
+	}
 	
 	static void ecrire(Vector<double[]> tab)
 	
@@ -524,20 +552,24 @@ public class Programme_principal {
 		    
 		    for (int i = 0 ; i < tab.size() ; i++ )
 		    {
+		    	//DecimalFormat df = new DecimalFormat("0.##########");
+		    	
 		    	tab_intermediaire = tab.elementAt(i);
 		    	String l = String.valueOf (tab_intermediaire[0]);
 		        fw.write (estPlus((l.substring(0, min(5, l.length())))));
-		        fw.write("; " );
-		        String m = String.valueOf (tab_intermediaire[1]);
-		        fw.write (estPlus(m.substring(0, min(5, m.length()))));
-		        fw.write("; ");
-		        String n = String.valueOf (tab_intermediaire[2]);
-		        fw.write (estPlus(n.substring(0, min(5, m.length()))));
-		        fw.write("; ");
-		        String o = String.valueOf (tab_intermediaire[3]);
-		        fw.write(estPlus(o.substring(0, min(5, o.length()))));
-		        fw.write("; ");
+		        //fw.write("; " );
+		        //String m = String.valueOf (tab_intermediaire[1]);
+		        //fw.write (estPlus(m.substring(0, min(5, m.length()))));
+		        //fw.write("; ");
+		        //String n = String.valueOf (estPlus(tab_intermediaire[2]));
+		        //fw.write (estPlus(n.substring(0, min(5, n.length()))));
+		        //fw.write("; ");
+		        //String o = String.valueOf (estPlus(tab_intermediaire[3]));
+		        //fw.write(estPlus(o.substring(0, min(5, o.length()))));
+		        //fw.write("; ");
 		        fw.write ("\r\n");
+		    	
+		    	//System.out.println(tab_intermediaire[2]);
 		    }
 		 
 		    fw.close();
