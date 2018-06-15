@@ -2,6 +2,7 @@
 
 //import com.trolltech.qt.gui.QPushButton;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
@@ -11,6 +12,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 
 public class GUI extends Application {
 
@@ -37,55 +43,42 @@ public class GUI extends Application {
 	    }
 
 	    @Override
-	    public void start(Stage stage) throws Exception {
-	        //System.out.println( "Start method inside Thread : " +  Thread.currentThread().getName());
-	    	
-	    	
-	    	// définit la largeur et la hauteur de la fenêtre
-	        // en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
-	        stage.setWidth(800);
-	        stage.setHeight(600);
-	        // met un titre dans la fenêtre
-	        stage.setTitle("Joli décor!");
+	    public void start(Stage primaryStage) throws Exception {
+	    
+	    	Group root = new Group();
 
-	        // la racine du sceneGraph est le root
-	        Group root = new Group();
-	        Scene scene = new Scene(root);
-	        scene.setFill(Color.SKYBLUE);
+	        Scene scene = new Scene(root, 800, 600, Color.LIGHTBLUE);
+
+	        primaryStage.setScene(scene);
+
+	        Parametre param = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, 10, 35);
 	        
-	        // création du soleil
-	        Circle sun = new Circle(60, Color.web("yellow", 0.8));
-	        sun.setCenterX(600);
-	        sun.setCenterY(100);
+	        
+
+
+	       
+
+	        Circle cercle = new Circle();
+
+	        cercle.setCenterX(300);//réglage de la position, de la taille et de la couleur du cercle
+
+	        cercle.setCenterY(200);
+
+	        cercle.setRadius(100);
+
+	        cercle.setFill(Color.YELLOW);
+
+	        cercle.setStroke(Color.ORANGE);//réglage de la couleur de la bordure et de son épaisseur
+
+	        cercle.setStrokeWidth(5);
+
 	     
-	        // création du sol
-	        Rectangle ground = new Rectangle(0, 400, 800, 200);
-	        ground.setFill(Color.GREEN);
-	        
-	        // création d'un élément plus complexe, le panneau
-	        Group sign = new Group();
-	        sign.setTranslateX(150);
-	        sign.setTranslateY(200);
-	        // Attention les coordonnées sont celles du panneau, pas de la scène
-	        Text text = new Text(10, 30, "Hello world!");
-	        text.setFont(new Font(80));
-	        text.setFill(Color.WHITE);
-	        // le repère utilisé est celui du panneau
-	        Rectangle panel = new Rectangle( 0, -50, 500, 110);
-	        panel.setFill(Color.DARKBLUE);
-	        // composer l'élément plus complexe
-	        sign.getChildren().add(panel);
-	        sign.getChildren().add(text);
 
-	        // ajout de tous les éléments de la scène
-	        root.getChildren().add(sun);
-	        root.getChildren().add(ground);
-	        root.getChildren().add(sign);
-	        
-	        // ajout de la scène sur l'estrade
-	        stage.setScene(scene);
-	        // ouvrir le rideau
-	        stage.show();
+	        //root.getChildren().add(cercle);//on ajoute le cercle au groupe root
+	        root.getChildren().add(param);
+	        primaryStage.show();	
+	    	
+	    	
 	    }
 	
 	
