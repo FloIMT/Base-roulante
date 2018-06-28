@@ -75,7 +75,9 @@ public class GUI extends Application {
 	     
 
 	        //root.getChildren().add(cercle);//on ajoute le cercle au groupe root
+	        Graphe graphe = new Graphe(3000, 3000, 30, Color.WHITE, 50, 50);
 	        root.getChildren().add(param);
+	        root.getChildren().add(graphe);
 	        primaryStage.show();	
 	    	
 	    	
