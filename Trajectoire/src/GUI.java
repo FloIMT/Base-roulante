@@ -14,23 +14,14 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 
 public class GUI extends Application {
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -53,11 +44,10 @@ public class GUI extends Application {
 
 	        Parametre param = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, 10, 35);
 	        
-	        
-
-
+	        Bouton bouton_marche = new Bouton(60, 900, "play-64.png");
 	       
-
+	        
+	        
 	        Circle cercle = new Circle();
 
 	        cercle.setCenterX(300);//réglage de la position, de la taille et de la couleur du cercle
@@ -72,12 +62,32 @@ public class GUI extends Application {
 
 	        cercle.setStrokeWidth(5);
 
-	     
+	        Point P1 = new Point(0, 0);
+	        Point P2 = new Point(0, 10);
+	        Ligne l = new Ligne(P1, P2);
+	        System.out.println(l.getLongeur());
 
 	        //root.getChildren().add(cercle);//on ajoute le cercle au groupe root
-	        Graphe graphe = new Graphe(3000, 3000, 30, Color.WHITE, 50, 50);
+	        Graphe graphe = new Graphe(800, 1600, 30, Color.WHITE, 50, 50, 0.0025);
 	        root.getChildren().add(param);
 	        root.getChildren().add(graphe);
+	        
+	        bouton_marche.getBouton().setOnAction(new EventHandler() {
+
+				@Override
+				public void handle(Event arg0) {
+					// TODO Auto-generated method stub
+					Programme_principal pg = new Programme_principal("fichier.txt");
+					graphe.genererTrajectoire("fichier.txt");
+					pg.lancer();
+					System.out.println("ok");
+					
+				}
+			});
+	        root.getChildren().add(bouton_marche);
+	        
+	        
+	       
 	        primaryStage.show();	
 	    	
 	    	

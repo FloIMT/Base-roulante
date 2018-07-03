@@ -36,4 +36,8 @@ public class Point {
 		PointGraphique pg = new PointGraphique(this.getX(), this.getY());
 		
 	}
+	public PointPlan toPlan(double echelle) {
+		return new PointPlan(echelle*this.getX(), echelle*this.getY());
+	}
+	
 }

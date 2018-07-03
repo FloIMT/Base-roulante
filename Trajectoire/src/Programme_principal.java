@@ -10,20 +10,29 @@ public class Programme_principal {
 
 	
 	
-	static double Wmax = 10.5;
-	static double Emax = 12.5;
+	static double Wmax = 10.5; //Vitesse angulaire max. du moteur
+	static double Emax = 12.5; //Acceleration max. du moteur
 	
-	static double Vmax = 1;
-	static double Amax = 0.5;
+	static double Vmax = 1; //Vitesse maximale en coordonnees cartesiennes
+	static double Amax = 0.5; //Acceleration max en coord. cartesiennes
 
-	static double r0 = 0.04;
-	static double dist_roues = 0.2;
+	static double r0 = 0.04; //Rayon des roues
+	static double dist_roues = 0.2; //Distance entre les roues
 	
-	static double T0 = 0.010;
-	static int k = 4;
+	static double T0 = 0.010; //Temps d'echantillonage
+	static int k = 4; //Cf poly
 	
+	private String nomFichier;
 	
-	public static Vector<double[]> lireTrajectoire(String nomFichier) {
+	public Programme_principal(String nomFichier) {
+		this.nomFichier = nomFichier;
+	}
+	
+	public void lancer() {
+		ecrire(lireTrajectoire(this.nomFichier));
+	}
+	
+	public static Vector<double[]> lireTrajectoire(String nomFichier) { //Transforme le fichier texte en vecteur de vitesses et angles pour les deux moteurs
 		
 		String commande;
 		Vector<double[]> vect=new Vector();
@@ -32,7 +41,6 @@ public class Programme_principal {
 		
 		double theta1 = 0;
 		double theta2 = 0;
-		
 		
 		try
 		{
@@ -48,7 +56,7 @@ public class Programme_principal {
 		    	
 		    	type = commande.substring(0, 3);
 		    	
-		    	if (type.equals("LIN")) {
+		    	if (type.equals("LIN")) { //Si les caracteres LIN sont rencontres en debut de ligne, les commandes suivantes sont traitees pour retourner des vitesses relavites a une ligne
 		    		
 		    		System.out.println("LIN");
 		    		
@@ -155,78 +163,6 @@ public class Programme_principal {
 		return vect;
 	}
 	
-
-
-
-	static double[] derivPol(double[] Pol) { //Renvoie les coefficients de la derivée du polynôme Pol (coefficient de degré 0 à l'indice 0)
-		
-		double[] polDeriv = new double[Pol.length]; //On créé un tableau de même taille que Pol pour stocker les coefficients de la dérivée
-		
-		for (int i = 0; i < 4; i++) {
-			polDeriv[i] = i*Pol[i];
-		}
-		
-		return polDeriv;
-	}
-	
-	static double[][] BezierX(double[][] Points) {
-	
-		double[] B0 = {1.0, -3.0, 3.0, -1.0}; //Definition des trois premiers polynômes de Bezier
-		double[] B1 = {0.0, 3*1.0, 3*(-2.0), 3*(1.0)};
-		double[] B2 = {0.0, 0.0, 3*(1.0), 3*(-1.0)};
-		double[] B3 = {0.0, 0.0, 0.0, 1.0};
-		
-		double P0 = Points[0][0];
-		double P1 = Points[1][0];
-		double P2 = Points[2][0];
-		double P3 = Points[3][0];
-		
-		return null;
-	}
-	
-	static double[][] BezierY(double[][] Points) {
-		
-		double[] B0 = {1.0, -3.0, 3.0, -1.0}; //Definition des trois premiers polynômes de Bezier
-		double[] B1 = {0.0, 3*1.0, 3*(-2.0), 3*(1.0)};
-		double[] B2 = {0.0, 0.0, 3*(1.0), 3*(-1.0)};
-		double[] B3 = {0.0, 0.0, 0.0, 1.0};
-		
-		int n = Points.length;
-		
-		double P0 = Points[0][1];
-		double P1 = Points[1][1];
-		double P2 = Points[2][1];
-		double P3 = Points[3][1];
-		
-		
-		return null;
-	}
-	
-	static double[] sommeP(double[] P1, double[] P2) { //Renvoie la somme de deux polynômes
-		
-		double[] P3 = new double[P1.length];
-		
-		for (int i = 0; i < P1.length; i ++) {
-			
-			P3[i] = P1[i] + P2[i];
-		}
-		
-		return P3;
-	}
-	
-	static double[] multiplie(double coeff, double[] P) { //Multiplie un polynôme par un coefficient coeff
-		
-		double[] polMult = new double[P.length];
-		
-		for (int i = 0; i < P.length; i++) {
-			
-			polMult[i] = coeff * P[i];
-			
-		}
-		
-		
-		return polMult;
-	}
 	
 	static double estSup(double a) {
 		if (a > 0.001) {
@@ -237,22 +173,13 @@ public class Programme_principal {
 		}
 	}
 
-	static double[] line(double d){ //xi et yi : coordonnees de depart et d'arrivee, dqm et dq2m : vitesse et acceleration max. des moteurs
-		
-		
+	static double[] line(double d){ //Prend une longueur de ligne en entree et retourne les parametres T et Tau correspondant (cf poly)
 		
 		double Txy = d/Vmax;
-		//System.out.println("Txy = " + Txy);
-		
 		double Tauxy = Vmax/Amax;
-		//System.out.println("Tauxy = " + Tauxy);
-		
-		
-		
 		double T = (d/(r0*Wmax));
-		//System.out.println("T = " + T);
-		double Tau = Wmax/Emax;
-		//System.out.println("Tau = " + Tau);
+		double Tau = Wmax/Emax; // Cf poly
+		
 		
 		if (Txy < Tauxy) {
 			
@@ -280,21 +207,18 @@ public class Programme_principal {
 	}
 	
 	static double[][] v(double[] param, double d1, double d2) {
-		System.out.println("ok2");
+		
 		double T = param[0];
 		double Tau = param[1];
 		
 		int n = (int)((T + Tau)/T0);
 		int n0 = (int)(Tau/T0);
-		//System.out.println("n0 =" + n0);
-		
-		//System.out.println("d1 =" + d1);
-		
+	
 		double V1max = d1/(r0*T);
-		System.out.println("V1max = " + V1max);
+		//System.out.println("V1max = " + V1max);
 		
 		double V2max = d2/(r0*T);
-		System.out.println("V2max = " + V2max);
+		//System.out.println("V2max = " + V2max);
 		
 		
 		double[][] v = new double[n][2];
@@ -325,8 +249,8 @@ public class Programme_principal {
 		
 		
 		
-		System.out.println("ok3");
-		System.out.println("long = " + v.length);
+		//System.out.println("ok3");
+		//System.out.println("long = " + v.length);
 		return v;
 	}
 	
@@ -339,25 +263,21 @@ public class Programme_principal {
 		double longueur_arc = theta * r;
 		//distance parcourue par le robot
 		double Txy = longueur_arc/Vmax;
-		System.out.println("Txy = " + Txy);
+		//System.out.println("Txy = " + Txy);
 		
 		double T1 = theta*(r-dist_roues)/(r0*Wmax);
-		System.out.println("T1 = " + T1);//distance parcourue par la roue 1
+		//System.out.println("T1 = " + T1);//distance parcourue par la roue 1
 		double T2 = theta*(r+dist_roues)/(r0*Wmax);
-		System.out.println("T2 = " + T2);
+		//System.out.println("T2 = " + T2);
 		double Tauxy = Vmax/Amax;
-		System.out.println("Tauxy = " + Tauxy);
+		//System.out.println("Tauxy = " + Tauxy);
 		
 		double Tau1 = Wmax/Emax;
-		System.out.println("Tau1 = " + Tau1);
+		//System.out.println("Tau1 = " + Tau1);
 		double Tau2 = Wmax/Emax;
-		System.out.println("Tau2 = " + Tau2);
-		System.out.println("longueur_arc = " + longueur_arc);
-		System.out.println("Txy = " + Txy);
-		
-		
-		
-		
+		//System.out.println("Tau2 = " + Tau2);
+		//System.out.println("longueur_arc = " + longueur_arc);
+		//System.out.println("Txy = " + Txy);
 		
 		if (Txy < Tauxy) {
 					
@@ -365,7 +285,6 @@ public class Programme_principal {
 					Txy = Tauxy;
 				}
 				
-		
 		if (T1 < Tau1) {
 			
 			Tau1 = Math.sqrt(theta*(r-dist_roues)/Emax);
@@ -379,37 +298,22 @@ public class Programme_principal {
 		
 		}
 		
-		
 		double T = max(max(Txy, T1), T2);
 		double Tau = max(max(Tauxy, Tau1), Tau2);
-		
 		
 		double[] param = new double[2];
 		param[0] = T;
 		param[1] = Tau;
 		
-		
 		return param;
 		
 }
 	
-		
-
-	static double[][] line(double x0, double y0, double x1, double y1, double dqm, double dq2m, double Te, int k){ //xi et yi : coordonnees de depart et d'arrivee, dqm et dq2m : vitesse et acceleration max. des moteurs
-
-		
-		
-		
-		
-		return null;
-	}
 	
-	static double[][] rot(double theta){
+	static double[][] rot(double theta){ //Prend un angle de rotation en entree et retourne le vecteur des vitesses
 		
 		double Txy = 0;
 		double Tauxy = Vmax/Amax;
-		
-		
 		
 		double T = (theta*(dist_roues/2))/(Wmax*r0);
 		double Tau = Wmax/Emax;
@@ -428,12 +332,11 @@ public class Programme_principal {
 					T = Tau;
 				}
 		
-		
 		T = max(Txy, T);
 		Tau = max(Tauxy, Tau);
 		
-		System.out.println("T = " + T);
-		System.out.println("Tau = " + Tau);
+		//System.out.println("T = " + T);
+		//System.out.println("Tau = " + Tau);
 		double[] param = new double[2];
 		param[0] = T;
 		param[1] = Tau;
@@ -441,10 +344,9 @@ public class Programme_principal {
 		
 		if(theta >= 0) {
 			
-			
-			double d1 = -theta*(dist_roues/2);
+	        double d1 = -theta*(dist_roues/2);
 			double d2 = -d1;
-			System.out.println("ok");
+			//System.out.println("ok");
 			return v(param, d1, d2);
 					
 		}
@@ -453,21 +355,19 @@ public class Programme_principal {
 			
 			double d1 = theta*(dist_roues/2);
 			double d2 = -d1;
-			System.out.println("ok");
+			//System.out.println("ok");
 			return v(param, d1, d2);
 		}	
 	}
 
 
-	static double[][] v_circle(double[] param, double r, double theta){
+	static double[][] v_circle(double[] param, double r, double theta){ //Retourne le vecteur des vitesses correspondant à un arc de cercle de rayon r et d'angle theta
 	
-		
 		double T = param[0];
 		double Tau = param[1];
-		System.out.println(T);
+		//System.out.println(T);
 		int n = (int)((T + Tau)/T0);
 		int n0 = (int)(Tau/T0);
-		
 		
 		double V1max;
 		double V2max;
@@ -539,11 +439,11 @@ public class Programme_principal {
 		}
 	}
 	
-	static void ecrire(Vector<double[]> tab)
+	static void ecrire(Vector<double[]> tab) //Ecrit les vitesses et angles des moteurs dans un fichier.
 	
 	{
 		double[] tab_intermediaire;
-		File f = new File ("vitesses");
+		File f = new File ("vitesses.txt");
 		
 		try
 		{
@@ -556,17 +456,17 @@ public class Programme_principal {
 		    	
 		    	tab_intermediaire = tab.elementAt(i);
 		    	String l = String.valueOf (tab_intermediaire[0]);
-		        fw.write (estPlus((l.substring(0, min(5, l.length())))));
-		        //fw.write("; " );
-		        //String m = String.valueOf (tab_intermediaire[1]);
-		        //fw.write (estPlus(m.substring(0, min(5, m.length()))));
-		        //fw.write("; ");
-		        //String n = String.valueOf (estPlus(tab_intermediaire[2]));
-		        //fw.write (estPlus(n.substring(0, min(5, n.length()))));
-		        //fw.write("; ");
-		        //String o = String.valueOf (estPlus(tab_intermediaire[3]));
-		        //fw.write(estPlus(o.substring(0, min(5, o.length()))));
-		        //fw.write("; ");
+		        fw.write (estPlus((l.substring(0, Math.min(5, l.length())))));
+		        fw.write("; " );
+		        String m = String.valueOf (tab_intermediaire[1]);
+		        fw.write (estPlus(m.substring(0, Math.min(5, m.length()))));
+		        fw.write("; ");
+		        String n = String.valueOf (estPlus(tab_intermediaire[2]));
+		        fw.write (estPlus(n.substring(0, Math.min(5, n.length()))));
+		        fw.write("; ");
+		        String o = String.valueOf (estPlus(tab_intermediaire[3]));
+		        fw.write(estPlus(o.substring(0, Math.min(5, o.length()))));
+		        fw.write("; ");
 		        fw.write ("\r\n");
 		    	
 		    	//System.out.println(tab_intermediaire[2]);
@@ -581,28 +481,5 @@ public class Programme_principal {
 	}
 	
 	
-	
-	
-	private static int min(int i, int j) {
-	
-		if(i>j) {
-			return j;
-		}
-		else {
-			return i;
-		}
-		
-	}
-	
-	
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Vector<double[]> res = lireTrajectoire("fichier.txt");
-		ecrire(res);
-		
-		
-	}
-
-
-	}
+}
