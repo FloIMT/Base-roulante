@@ -44,34 +44,13 @@ public class GUI extends Application {
 
 	        Parametre param = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, 10, 35);
 	        
-	        Bouton bouton_marche = new Bouton(60, 900, "play-64.png");
+	        
 	       
-	        
-	        
-	        Circle cercle = new Circle();
-
-	        cercle.setCenterX(300);//réglage de la position, de la taille et de la couleur du cercle
-
-	        cercle.setCenterY(200);
-
-	        cercle.setRadius(100);
-
-	        cercle.setFill(Color.YELLOW);
-
-	        cercle.setStroke(Color.ORANGE);//réglage de la couleur de la bordure et de son épaisseur
-
-	        cercle.setStrokeWidth(5);
-
-	        Point P1 = new Point(0, 0);
-	        Point P2 = new Point(0, 10);
-	        Ligne l = new Ligne(P1, P2);
-	        System.out.println(l.getLongeur());
-
-	        //root.getChildren().add(cercle);//on ajoute le cercle au groupe root
 	        Graphe graphe = new Graphe(800, 1600, 30, Color.WHITE, 50, 50, 0.0025);
 	        root.getChildren().add(param);
 	        root.getChildren().add(graphe);
 	        
+	        Bouton bouton_marche = new Bouton(60, 900, "play-64.png");
 	        bouton_marche.getBouton().setOnAction(new EventHandler() {
 
 				@Override
@@ -86,8 +65,20 @@ public class GUI extends Application {
 			});
 	        root.getChildren().add(bouton_marche);
 	        
-	        
-	       
+	        Bouton bouton_clear = new Bouton(bouton_marche.getX() + 100, bouton_marche.getY(), "clear.png");
+	        bouton_clear.getBouton().setOnAction(new EventHandler() {
+
+				@Override
+				public void handle(Event arg0) {
+					// TODO Auto-generated method stub
+					Graphe nouveau_graphe = new Graphe(graphe);
+					root.getChildren().remove(graphe);
+					root.getChildren().add(nouveau_graphe);
+					
+				}
+	        	
+	        });
+	       root.getChildren().add(bouton_clear);
 	        primaryStage.show();	
 	    	
 	    	

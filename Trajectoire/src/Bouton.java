@@ -42,6 +42,12 @@ public class Bouton extends Parent{
 	public Button getBouton() {
 		return this.bouton;
 	}
+	public int getX() {
+		return this.positionX;
+	}
+	public int getY() {
+		return this.positionY;
+	}
 	
 	
 	

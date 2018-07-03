@@ -27,7 +27,7 @@ public class Graphe extends Parent{
 	static double proportion_ligne = 0.1;
 	static double longueur_coupe = 0.01; //en m
 	private double echelle; //1 pixel = echelle metres
-
+	private Color couleur;
 	
 	
 	public Graphe(int hauteur, int largeur, int distancePoints, Color couleur, int positionX, int positionY, double echelle) {
@@ -118,14 +118,36 @@ public class Graphe extends Parent{
 		});
 		this.getChildren().add(cadre);
 	}
-	private Color couleur;
 	
-	public Point getPoint(int i) {
-		
-		return listePoints.get(i);
-		
+	public Graphe(Graphe g) {
+		this(g.getHauteur(), g.getLargeur(), g.getDistancePoints(), g.getCouleur(), g.getPositionX(), g.getPositionY(), g.getEchelle());
 	}
 	
+	public Point getPoint(int i) {
+		return listePoints.get(i);
+	}
+	public void clear() {
+		this.listePoints = new ArrayList<Point>();
+	}
+	
+	public int getHauteur() {
+		return hauteur;
+	}
+	public int getLargeur() {
+		return largeur;
+	}
+	public int getDistancePoints() {
+		return distancePoints;
+	}
+	public int getPositionX() {
+		return positionX;
+	}
+	public int getPositionY() {
+		return positionY;
+	}
+	public Color getCouleur() {
+		return couleur;
+	}
 	public double getEchelle() {
 		return this.echelle;
 	}
