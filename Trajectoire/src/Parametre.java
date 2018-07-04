@@ -26,6 +26,7 @@ public class Parametre extends Parent {
 	private int positionY;
 	public Slider slider;
 	
+	// TODO : binder la valeur des parametres avec celle du programme_principal correspondant
 
 	public Parametre(double min, double max, String unite, String nom, double valeur, int positionX, int positionY) {
 		
