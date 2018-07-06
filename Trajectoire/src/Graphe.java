@@ -212,7 +212,15 @@ public class Graphe extends Parent{
 		
 		
 	}
-	
+	public int getX() {
+		return this.positionX;
+	}
+	public int getY() {
+		return this.positionY;
+	}
+	public void setEchelle(double e) {
+		this.echelle = e;
+	}
 	
 	
 }

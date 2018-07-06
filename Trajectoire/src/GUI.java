@@ -1,6 +1,8 @@
 //import com.trolltech.qt.gui.QApplication;
 
 //import com.trolltech.qt.gui.QPushButton;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.stage.Stage;
@@ -46,15 +48,36 @@ public class GUI extends Application {
 
 	        primaryStage.setScene(scene);
 
-	        Parametre param = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, 10, 35);
+	        
+	        Graphe graphe = new Graphe(800, 1500, 30, Color.WHITE, 30, 50, 0.0025);
+
+	        System.out.println(graphe.getLargeur());
 	        
 	        
+	        Cadre cadre = new Cadre(240, 300, graphe.getLargeur() + graphe.getPositionX() + 10, 50, Color.ALICEBLUE);
+
+	        Parametre param_Wmax = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, cadre.getX() + 5, cadre.getY() + 25);
+	        Parametre param_Emax = new Parametre(0.0, 15, "rad.s-2","Acc. angulaire", 12.5, param_Wmax.getX(), param_Wmax.getY() + 60);
+	        Parametre param_Vmax = new Parametre(0.0, 2, "m/s", "Vitesse", 1.0, param_Emax.getX(), param_Emax.getY() + 60);
+	        Parametre param_Amax = new Parametre(0.0, 1.0, "m.s-2", "Acc.", 0.5, param_Vmax.getX(), param_Vmax.getY() + 60);
 	        
-	        Graphe graphe = new Graphe(800, 1600, 30, Color.WHITE, 50, 50, 0.0025);
-	        root.getChildren().add(param);
+	        LigneG ligne1 = new LigneG(cadre.getX() + 10, (int)((param_Wmax.getY() + param_Emax.getY())/2), cadre.getX() + cadre.getLargeur() - 10, (int)((param_Wmax.getY() + param_Emax.getY())/2));
+	        LigneG ligne2 = new LigneG(cadre.getX() + 10, (int)((param_Emax.getY() + param_Vmax.getY())/2), cadre.getX() + cadre.getLargeur() - 10, (int)((param_Emax.getY() + param_Vmax.getY())/2));
+	        LigneG ligne3 = new LigneG(cadre.getX() + 10, (int)((param_Vmax.getY() + param_Amax.getY())/2), cadre.getX() + cadre.getLargeur() - 10, (int)((param_Vmax.getY() + param_Amax.getY())/2));
+	        
+	        
+	        root.getChildren().add(cadre);
+	        root.getChildren().add(param_Wmax);
+	        root.getChildren().add(param_Emax);
+	        root.getChildren().add(param_Vmax);
+	        root.getChildren().add(param_Amax);
+	        root.getChildren().add(ligne1);
+	        root.getChildren().add(ligne2);
+	        root.getChildren().add(ligne3);
+	        
 	        root.getChildren().add(graphe);
 	        
-	        Echelle e = new Echelle(graphe.getLargeur() - 100 ,graphe.getPositionY() + graphe.getHauteur() - 25);
+	        Echelle e = new Echelle(graphe.getLargeur() - 120 ,graphe.getPositionY() + graphe.getHauteur() - 25);
 	        root.getChildren().add(e);
 	        
 	        Bouton bouton_marche = new Bouton(60, 900, "play-64.png");
@@ -63,8 +86,14 @@ public class GUI extends Application {
 				@Override
 				public void handle(Event arg0) {
 					// TODO Auto-generated method stub
-					Programme_principal pg = new Programme_principal("fichier.txt");
+					Programme_principal pg = new Programme_principal("fichier1.txt", 10.5, 12.5, 1, 0.5);
 					graphe.genererTrajectoire("fichier.txt");
+					pg.Wmax = param_Wmax.getValeur();
+					pg.Emax = param_Emax.getValeur();
+					pg.Vmax = param_Vmax.getValeur();
+					pg.Amax = param_Amax.getValeur();
+					graphe.setEchelle(e.getValeur());
+					
 					pg.lancer();
 					System.out.println("ok");
 					
@@ -81,7 +110,18 @@ public class GUI extends Application {
 					Graphe nouveau_graphe = new Graphe(graphe);
 					root.getChildren().remove(graphe);
 					root.getChildren().add(nouveau_graphe);
-					
+					root.getChildren().remove(e);
+					root.getChildren().add(e);
+					try
+				      {
+				      //Runtime rtime = Runtime.getRuntime();
+				      //rtime.exec("bash /home/florent/IMT/PRIME/Base-roulante/script.sh");
+				      Process process = Runtime.getRuntime().exec("bash script.sh");
+				      System.out.println("ok");
+				      } catch (IOException e) {
+				            e.printStackTrace();
+				            System.out.println("erreur");
+				        }
 				}
 	        	
 	        });

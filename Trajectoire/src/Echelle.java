@@ -23,7 +23,7 @@ public class Echelle extends Parent {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		
-		Slider slider = new Slider(0.005, 0.1, 0.025);
+		Slider slider = new Slider(0.0005, 0.1, 0.025);
 		
 		slider.setOrientation(Orientation.HORIZONTAL);
 		slider.setTranslateX(this.positionX);
@@ -80,6 +80,10 @@ public class Echelle extends Parent {
         //this.setTranslateY(this.positionY);
         
 		
+	}
+	
+	public double getValeur() {
+		return this.valeur.get();
 	}
 	
 }

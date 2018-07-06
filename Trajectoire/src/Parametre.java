@@ -49,23 +49,31 @@ public class Parametre extends Parent {
 		final Label nom_parametre = new Label();
 		final Label unit = new Label();
         
-        valeur_parametre.setLayoutX(positionX + 250);
-        valeur_parametre.setLayoutY(positionY);
+	
+       
         
-        unit.setLayoutX(positionX + 300);
-        unit.setLayoutY(positionY);
-        unit.setText(unite);
+        nom_parametre.setTranslateX(50);
+        //nom_parametre.setLayoutX(positionX);
+       // nom_parametre.setLayoutY(positionY);
+        nom_parametre.setTranslateY(-15);
         
-        nom_parametre.setLayoutX(positionX);
-        nom_parametre.setLayoutY(positionY);
         nom_parametre.setText(this.nom);
 		
 		this.slider = new Slider(this.min, this.max, (this.min + this.max)/2);
 		
 		this.slider.setOrientation(Orientation.HORIZONTAL);
 
-		this.slider.setTranslateX(positionX + 100);
-        this.slider.setTranslateY(positionY);
+		this.slider.setTranslateX(0);
+        //this.slider.setTranslateY();
+        
+        valeur_parametre.setLayoutX( 6 + 150);
+        valeur_parametre.setLayoutY(0);
+        
+        unit.setLayoutX(200);
+        unit.setLayoutY(0);
+        unit.setText(unite);
+        this.setTranslateX(positionX);
+        this.setTranslateY(positionY);
 
         //ProgressIndicator indicateur = new ProgressIndicator(0.0);
         //indicateur.progressProperty().bind(this.slider.valueProperty().divide(this.max - this.min));
@@ -88,6 +96,12 @@ public class Parametre extends Parent {
 	
 	public double getValeur() {
 		return this.valeur.get();
+	}
+	public int getX() {
+		return this.positionX;
+	}
+	public int getY() {
+		return this.positionY;
 	}
 	
 	

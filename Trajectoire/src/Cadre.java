@@ -4,13 +4,17 @@ import javafx.scene.shape.Rectangle;
 
 public class Cadre extends Parent {
 	
-	//private int largeur;
+	private int largeur;
 	//private int hauteur;
-	//private int positionX;
-	//private int positionY;
+	private int positionX;
+	private int positionY;
 	//private Color couleur;
 
 	public Cadre(int hauteur, int largeur, int positionX, int positionY, Color couleur) {
+		
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.largeur = largeur;
 		
 		Rectangle cadre = new Rectangle();
 
@@ -29,9 +33,16 @@ public class Cadre extends Parent {
         this.setTranslateY(positionY);
 
         this.getChildren().add(cadre);
-		
-		
-		
+        
+	}
+	public int getX() {
+		return this.positionX;
+	}
+	public int getY() {
+		return this.positionY;
+	}
+	public int getLargeur() {
+		return this.largeur;
 	}
 	
 }

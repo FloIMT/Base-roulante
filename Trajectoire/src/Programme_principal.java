@@ -10,11 +10,11 @@ public class Programme_principal {
 
 	
 	
-	static double Wmax = 10.5; //Vitesse angulaire max. du moteur
-	static double Emax = 12.5; //Acceleration max. du moteur
+	static double Wmax; //Vitesse angulaire max. du moteur 10.5
+	static double Emax; //Acceleration max. du moteur 12.5
 	
-	static double Vmax = 1; //Vitesse maximale en coordonnees cartesiennes
-	static double Amax = 0.5; //Acceleration max en coord. cartesiennes
+	static double Vmax; //Vitesse maximale en coordonnees cartesiennes 1
+	static double Amax; //Acceleration max en coord. cartesiennes 0.5
 
 	static double r0 = 0.04; //Rayon des roues
 	static double dist_roues = 0.2; //Distance entre les roues
@@ -24,12 +24,20 @@ public class Programme_principal {
 	
 	private String nomFichier;
 	
-	public Programme_principal(String nomFichier) {
+	public Programme_principal(String nomFichier, double a, double b, double c, double d) {
+		Wmax = a;
+		Emax = b;
+		Vmax = c;
+		Amax = d;
 		this.nomFichier = nomFichier;
 	}
 	
 	public void lancer() {
 		ecrire(lireTrajectoire(this.nomFichier));
+		System.out.println(Wmax);
+		System.out.println(Emax);
+		System.out.println(Vmax);
+		System.out.println(Amax);
 	}
 	
 	public static Vector<double[]> lireTrajectoire(String nomFichier) { //Transforme le fichier texte en vecteur de vitesses et angles pour les deux moteurs
@@ -452,7 +460,7 @@ public class Programme_principal {
 		    
 		    for (int i = 0 ; i < tab.size() ; i++ )
 		    {
-		    	//DecimalFormat df = new DecimalFormat("0.##########");
+		    	
 		    	
 		    	tab_intermediaire = tab.elementAt(i);
 		    	String l = String.valueOf (tab_intermediaire[0]);
@@ -469,7 +477,7 @@ public class Programme_principal {
 		        fw.write("; ");
 		        fw.write ("\r\n");
 		    	
-		    	//System.out.println(tab_intermediaire[2]);
+		    	
 		    }
 		 
 		    fw.close();
