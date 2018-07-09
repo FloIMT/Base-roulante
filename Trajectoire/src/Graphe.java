@@ -56,7 +56,7 @@ public class Graphe extends Parent{
 		
 	
 	
-		this.setOnMousePressed(new EventHandler<MouseEvent>(){
+	/*	this.setOnMousePressed(new EventHandler<MouseEvent>(){
 
 			@Override
 			public void handle(MouseEvent me) {
@@ -70,7 +70,7 @@ public class Graphe extends Parent{
 				
 				
 				
-		});
+		});*/
 		this.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             public void handle(MouseEvent me){
@@ -120,7 +120,7 @@ public class Graphe extends Parent{
 	}
 	
 	public Graphe(Graphe g) {
-		this(g.getHauteur(), g.getLargeur(), g.getDistancePoints(), g.getCouleur(), g.getPositionX(), g.getPositionY(), g.getEchelle());
+		this(g.getHauteur(), g.getLargeur(), g.getDistancePoints(), g.getCouleur(), g.getX(), g.getY(), g.getEchelle());
 	}
 	
 	public Point getPoint(int i) {
@@ -139,12 +139,12 @@ public class Graphe extends Parent{
 	public int getDistancePoints() {
 		return distancePoints;
 	}
-	public int getPositionX() {
-		return positionX;
-	}
-	public int getPositionY() {
-		return positionY;
-	}
+	//public int getPositionX() {
+		//return positionX;
+	//}
+	//public int getPositionY() {
+		//return positionY;
+	//}
 	public Color getCouleur() {
 		return couleur;
 	}
@@ -185,24 +185,40 @@ public class Graphe extends Parent{
 	public void genererTrajectoire(String nomFichier) {
 		List<Point> L = this.getListePoints();
 		int n = L.size();
+		System.out.println(n + "pts");
 		
 		File f = new File(nomFichier);
 		
 		try {
 		    //PrintWriter pw = new PrintWriter (new BufferedWriter (new FileWriter (fichier)));
 			FileWriter fw = new FileWriter(f);
-			for(int i = 0; i < n - 2; i++) {
-				Ligne ligne1 = new Ligne(L.get(i), L.get(i+1));
+			if(n > 2) {
+				Ligne ligne0 = new Ligne(L.get(0), L.get(1));
+				Ligne ligne1 = new Ligne(L.get(1), L.get(2));
+				fw.write("LIN " + this.echelle*(1-proportion_ligne)*ligne0.getLongeur()); // Echelle !!
+		        fw.write ("\r\n");
+				fw.write("CIR " + (ligne0.getArc(ligne1, longueur_coupe, echelle, proportion_ligne).getRayon() + ", " + (ligne0.getArc(ligne1, longueur_coupe, echelle, proportion_ligne).getAngle())));
+		        fw.write ("\r\n");
+				
+			for(int i = 1; i < n - 2; i++) {
+				ligne1 = new Ligne(L.get(i), L.get(i+1));
 				Ligne ligne2 = new Ligne(L.get(i + 1), L.get(i + 2));
 				//System.out.println(ligne1.toString());
 				System.out.println("echelle = " + this.getEchelle());
-				fw.write("LIN " + Math.max(ligne1.getLongeur()*this.echelle - longueur_coupe, (1-proportion_ligne)*ligne1.getLongeur())*this.echelle); // Echelle !!
+				fw.write("LIN " + this.echelle*(1-2*proportion_ligne)*ligne1.getLongeur()); // Echelle !!
 		        fw.write ("\r\n");
 				fw.write("CIR " + (ligne1.getArc(ligne2, longueur_coupe, echelle, proportion_ligne).getRayon() + ", " + (ligne1.getArc(ligne2, longueur_coupe, echelle, proportion_ligne).getAngle())));
 		        fw.write ("\r\n");
 				
 			}
+			ligne1 = new Ligne(L.get(n-2), L.get(n-1));
 			
+			//System.out.println(ligne1.toString());
+			System.out.println("echelle = " + this.getEchelle());
+			fw.write("LIN " + this.echelle*(1-proportion_ligne)*ligne1.getLongeur()); // Echelle !!
+	        
+			
+			}
 			fw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

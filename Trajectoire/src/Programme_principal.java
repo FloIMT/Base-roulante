@@ -34,13 +34,11 @@ public class Programme_principal {
 	
 	public void lancer() {
 		ecrire(lireTrajectoire(this.nomFichier));
-		System.out.println(Wmax);
-		System.out.println(Emax);
-		System.out.println(Vmax);
-		System.out.println(Amax);
 	}
 	
-	public static Vector<double[]> lireTrajectoire(String nomFichier) { //Transforme le fichier texte en vecteur de vitesses et angles pour les deux moteurs
+	public static Vector<double[]> lireTrajectoire(String nomFichier) { 
+		
+		//Transforme le fichier texte en vecteur de vitesses et angles pour les deux moteurs
 		
 		String commande;
 		Vector<double[]> vect=new Vector();
@@ -64,8 +62,8 @@ public class Programme_principal {
 		    	
 		    	type = commande.substring(0, 3);
 		    	
-		    	if (type.equals("LIN")) { //Si les caracteres LIN sont rencontres en debut de ligne, les commandes suivantes sont traitees pour retourner des vitesses relavites a une ligne
-		    		
+		    	if (type.equals("LIN")) { //Si les caracteres LIN sont rencontres en debut de ligne, 
+		    		//les commandes suivantes sont traitees pour retourner des vitesses relavites a une ligne
 		    		System.out.println("LIN");
 		    		
 		    		double d = Double.parseDouble(commande.substring(4, commande.length()));
@@ -148,9 +146,7 @@ public class Programme_principal {
 		    	
 		    	
 		    }
-		    	
-		    	
-		    
+		    		    
 			    
 		}while (commande != null);
 		
@@ -181,7 +177,9 @@ public class Programme_principal {
 		}
 	}
 
-	static double[] line(double d){ //Prend une longueur de ligne en entree et retourne les parametres T et Tau correspondant (cf poly)
+	static double[] line(double d){ 
+		
+		//Prend une longueur de ligne en entree et retourne les parametres T et Tau correspondant (cf poly)
 		
 		double Txy = d/Vmax;
 		double Tauxy = Vmax/Amax;
@@ -214,7 +212,10 @@ public class Programme_principal {
 		return param;
 	}
 	
-	static double[][] v(double[] param, double d1, double d2) {
+	static double[][] v(double[] param, double d1, double d2) { 
+													
+		//Prend un tableau param contenant la valeur des paramètres, ainsi que la  distance di parcourue par le moteur i en entree.
+		//Renvoie le tableau des vitesses correspondant.
 		
 		double T = param[0];
 		double Tau = param[1];
@@ -223,10 +224,7 @@ public class Programme_principal {
 		int n0 = (int)(Tau/T0);
 	
 		double V1max = d1/(r0*T);
-		//System.out.println("V1max = " + V1max);
-		
 		double V2max = d2/(r0*T);
-		//System.out.println("V2max = " + V2max);
 		
 		
 		double[][] v = new double[n][2];
@@ -235,8 +233,6 @@ public class Programme_principal {
 			
 			v[i][0] = ((i*1.0)/(n0*1.0))*V1max;
 			v[i][1] = ((i*1.0)/(n0*1.0))*V2max;
-			
-			
 			
 		}
 		
@@ -253,12 +249,6 @@ public class Programme_principal {
 			v[i][0] = alpha * V1max;
 			v[i][1] = alpha * V2max;
 		}
-		
-		
-		
-		
-		//System.out.println("ok3");
-		//System.out.println("long = " + v.length);
 		return v;
 	}
 	
@@ -271,21 +261,13 @@ public class Programme_principal {
 		double longueur_arc = theta * r;
 		//distance parcourue par le robot
 		double Txy = longueur_arc/Vmax;
-		//System.out.println("Txy = " + Txy);
 		
-		double T1 = theta*(r-dist_roues)/(r0*Wmax);
-		//System.out.println("T1 = " + T1);//distance parcourue par la roue 1
-		double T2 = theta*(r+dist_roues)/(r0*Wmax);
-		//System.out.println("T2 = " + T2);
+		
+		double T1 = theta*(r-dist_roues/2)/(r0*Wmax);
+		double T2 = theta*(r+dist_roues/2)/(r0*Wmax);
 		double Tauxy = Vmax/Amax;
-		//System.out.println("Tauxy = " + Tauxy);
-		
 		double Tau1 = Wmax/Emax;
-		//System.out.println("Tau1 = " + Tau1);
 		double Tau2 = Wmax/Emax;
-		//System.out.println("Tau2 = " + Tau2);
-		//System.out.println("longueur_arc = " + longueur_arc);
-		//System.out.println("Txy = " + Txy);
 		
 		if (Txy < Tauxy) {
 					
@@ -343,8 +325,6 @@ public class Programme_principal {
 		T = max(Txy, T);
 		Tau = max(Tauxy, Tau);
 		
-		//System.out.println("T = " + T);
-		//System.out.println("Tau = " + Tau);
 		double[] param = new double[2];
 		param[0] = T;
 		param[1] = Tau;
@@ -354,7 +334,7 @@ public class Programme_principal {
 			
 	        double d1 = -theta*(dist_roues/2);
 			double d2 = -d1;
-			//System.out.println("ok");
+
 			return v(param, d1, d2);
 					
 		}
@@ -363,17 +343,19 @@ public class Programme_principal {
 			
 			double d1 = theta*(dist_roues/2);
 			double d2 = -d1;
-			//System.out.println("ok");
+			
 			return v(param, d1, d2);
 		}	
 	}
 
 
-	static double[][] v_circle(double[] param, double r, double theta){ //Retourne le vecteur des vitesses correspondant à un arc de cercle de rayon r et d'angle theta
+	static double[][] v_circle(double[] param, double r, double theta){ 
 	
+		//Retourne le vecteur des vitesses correspondant à un arc de cercle de rayon r et d'angle theta
+		
 		double T = param[0];
 		double Tau = param[1];
-		//System.out.println(T);
+		
 		int n = (int)((T + Tau)/T0);
 		int n0 = (int)(Tau/T0);
 		

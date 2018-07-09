@@ -23,8 +23,7 @@ import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 
 
-//TODO : ajouter bouton de retour en arriere, pourquoi une gomme
-//TOTO : placer les parametres dans un cadre a la droite du graphe
+
 //TODO : ajouter le script permettant de lancer la commande Matlab
 
 public class GUI extends Application {
@@ -54,7 +53,7 @@ public class GUI extends Application {
 	        System.out.println(graphe.getLargeur());
 	        
 	        
-	        Cadre cadre = new Cadre(240, 300, graphe.getLargeur() + graphe.getPositionX() + 10, 50, Color.ALICEBLUE);
+	        Cadre cadre = new Cadre(240, 300, graphe.getLargeur() + graphe.getX() + 10, 50, Color.ALICEBLUE);
 
 	        Parametre param_Wmax = new Parametre(0.0, 10.0, "rad∕s", "Vitesse", 5.0, cadre.getX() + 5, cadre.getY() + 25);
 	        Parametre param_Emax = new Parametre(0.0, 15, "rad.s-2","Acc. angulaire", 12.5, param_Wmax.getX(), param_Wmax.getY() + 60);
@@ -77,7 +76,7 @@ public class GUI extends Application {
 	        
 	        root.getChildren().add(graphe);
 	        
-	        Echelle e = new Echelle(graphe.getLargeur() - 120 ,graphe.getPositionY() + graphe.getHauteur() - 25);
+	        Echelle e = new Echelle(graphe.getLargeur() - 120 ,graphe.getY() + graphe.getHauteur() - 25);
 	        root.getChildren().add(e);
 	        
 	        Bouton bouton_marche = new Bouton(60, 900, "play-64.png");

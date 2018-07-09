@@ -46,30 +46,35 @@ public class Ligne extends Parent{
 		double longueur1;
 		double longueur2;
 		
-		longueur1 = Math.min(longueur_coupe, echelle*this.getLongeur()*proportion_ligne);
-		longueur2 = Math.min(longueur_coupe, echelle*l.getLongeur()*proportion_ligne);
+		longueur1 = this.getLongeur()*proportion_ligne;
+		longueur2 = l.getLongeur()*proportion_ligne;
+		System.out.println("l1 = " + longueur1);
 		
 		double coeff1 = (longueur1/this.getLongeur());
 		double coeff2 = (longueur2/l.getLongeur());
+		System.out.println("1 = " + coeff1);
 		
 		PointPlan vect1 = this.getVecteur();
 		PointPlan vect2 = l.getVecteur();
+		System.out.println("vect1 : " + vect1.toString());
 		
 		PointPlan p_int1 = new PointPlan(this.getP2().getX() - coeff1*vect1.getX(), this.getP2().getY() - coeff1*vect1.getY());
 		PointPlan p_int2 = new PointPlan(this.getP2().getX() + coeff2*vect1.getX(), this.getP2().getY() + coeff2*vect2.getY());
-		
+		System.out.println(p_int1.toString());
 		PointPlan norm1 = vect1.normal();
 		PointPlan norm2 = vect2.normal();
-		
+		System.out.println("norm1 : " + norm1.toString());
+		System.out.println("norm2 : " + norm2.toString());
 		Mat M = new Mat(norm1.getX(), - norm2.getX(), norm1.getY(), -norm2.getY());
 		PointPlan Pint = new PointPlan(p_int2.getX() - p_int1.getX(), p_int1.getY() - p_int2.getY());
 		PointPlan t = M.inverse().res(Pint);
 		
 		PointPlan centre = new PointPlan(p_int1.getX() + t.getX()*norm1.getX(), p_int1.getY() + t.getY()*norm1.getY());
+		System.out.println("d = " + centre.getDistance(p_int1));
 		return new Arc(p_int1.getDistance(centre), getArgument(p_int1, p_int2));
 	}
 	public PointPlan getVecteur() { //Retourne le vecteur directeur de la ligne
-		return new PointPlan(this.getP2().getX() - this.getP1().getX(), this.getP2().getY()-this.getP2().getY());
+		return new PointPlan(this.getP2().getX() - this.getP1().getX(), this.getP2().getY()-this.getP1().getY());
 	}
 	public static double getArgument(Point c1, Point c2){
 		

@@ -24,4 +24,7 @@ public class PointPlan {
 	public PointPlan normal() {
 		return new PointPlan(this.getY(), -this.getX());
 	}
+	public String toString() {
+		return "(" + this.getX() + ", " + this.getY() + ")";
+	}
 }
